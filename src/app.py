@@ -16,7 +16,12 @@ conexion = MySQL(app)
 @app.route('/traerDatos', methods = ['POST'])
 def traer_datos():
     try:
-        print('error')
+        
+        path = "./"
+        lista_archivos = os.listdir(path)
+        for archivo in lista_archivos:
+            if archivo.endswith(".xlsx"):
+                os.remove(path + archivo)
 
         cursor = conexion.connection.cursor()
 
@@ -24,10 +29,6 @@ def traer_datos():
 
         #Parametros enviados por JSON, si se envia por fomulario...=> request.form.get()
         req_fecha   = request.json.get('fecha') + '%'
-        # req_empresa = request.json.get('empresa')
-        # req_zona    = request.json.get('zona')
-
-
         req_array_empresas   = request.json.get('empresas')
         req_array_zonas   = request.json.get('zonas')
 
@@ -44,15 +45,11 @@ def traer_datos():
         #nombre archivo con extension
         nombre_archivo_ext = 'Ventas SO ({0} {1})-{2}.xlsx'.format(nombre_mes[:3], req_anio, str(random.randint(100,999)))
 
-
         #Eliminar el registro si ya existe el mes y año 
         consulta_eliminar = 'DELETE FROM carcargasarchivos WHERE carurl = "{0}"'.format(nombre_archivo)
         cursor.execute(consulta_eliminar)
         conexion.connection.commit()
         print(cursor.rowcount, " registro eliminado: {0}".format(nombre_archivo))
-
-
-        
 
         if req_array_zonas == []:
 
@@ -89,29 +86,61 @@ def traer_datos():
         cursor.execute(consulta_seleccionar)
         datos = cursor.fetchall()
 
-
         #Creacion y manipulación del excel
         archivoXls = xlsxwriter.Workbook(nombre_archivo_ext)
         worksheet = archivoXls.add_worksheet('Ventas SO')
-
         
-        celda_empresa   = archivoXls.add_format({'font_color':'white','border_color':'#666666','border':2, 'font_name':'Segoe UI', 'font_size':9})
-        celda_cliente   = archivoXls.add_format({'font_color':'white','border_color':'#666666','border':2, 'font_name':'Segoe UI', 'font_size':9})
-        celda_ventas    = archivoXls.add_format({'font_color':'white','border_color':'#666666','border':2, 'font_name':'Segoe UI', 'font_size':9})
-
-        celda_empresa.set_bg_color('#F4B084')
-        celda_cliente.set_bg_color('#FFD966')
-        celda_ventas.set_bg_color('#292929')
+        celda_empresa   = archivoXls.add_format({
+            'font_color':'white',
+            'border_color':'#666666',
+            'border':2,
+            'font_name':'Segoe UI',
+            'font_size':9,
+            'bg_color': '#F4B084'
+        })
+        
+        celda_cliente   = archivoXls.add_format({
+            'font_color':'white',
+            'border_color':'#666666',
+            'border':2,
+            'font_name':'Segoe UI',
+            'font_size':9,
+            'bg_color': '#FFD966'
+        })
+        
+        celda_ventas    = archivoXls.add_format({
+            'font_color':'white',
+            'border_color':'#666666',
+            'border':2,
+            'font_name':'Segoe UI', 
+            'font_size':9,
+            'bg_color': '#292929'
+        })
 
         celda_empresa.set_align('vcenter')
         celda_cliente.set_align('vcenter')
         celda_ventas.set_align('vcenter')
 
-        celda_fecha = archivoXls.add_format({'font_color':'black','border_color':'#666666','border':2, 'font_name':'Calibri', 'font_size':9, 'num_format':'d-mmm'})
+        celda_fecha = archivoXls.add_format({
+            'font_color':'black',
+            'border_color':'#666666',
+            'border':2,
+            'font_name':'Calibri',
+            'font_size':9,
+            'num_format':'d-mmm'
+        })
 
         celda_fecha.set_align('vcenter')
 
-        celda_venta_numero  = archivoXls.add_format({'font_color':'black','border_color':'#666666','border':2, 'font_name':'Calibri', 'font_size':11,'num_format': '#,##0.00'})
+        celda_venta_numero  = archivoXls.add_format({
+            'font_color':'black',
+            'border_color':'#666666',
+            'border':2,
+            'font_name':'Calibri',
+            'font_size':11,
+            'num_format': '#,##0.00'
+        })
+
 
         worksheet.set_row(0, 24.75)
         worksheet.set_column(0, 2, 16)
@@ -122,7 +151,6 @@ def traer_datos():
         worksheet.set_column(10, 10, 8)
         worksheet.set_column(11, 14, 16)
 
-        
         worksheet.write(0, 0, 'Distribuidor', celda_empresa)
         worksheet.write(0, 1, 'Zona', celda_empresa)
         worksheet.write(0, 2, 'Locality', celda_empresa)
@@ -160,10 +188,8 @@ def traer_datos():
                 worksheet.write(row, col + 3, int(anio))
                 worksheet.write(row, col + 4, meses[mes])
                 worksheet.write(row, col + 5, int(dia))
-
                 worksheet.write(row, col + 6, g if g != 'SIN ASIGNAR' else '')
                 worksheet.write(row, col + 7, h if h != 'SIN ASIGNAR' else '') 
-
                 worksheet.write(row, col + 8, i if i != 'SIN ASIGNAR' else '') 
                 worksheet.write(row, col + 9, j if j != 'SIN ASIGNAR' else '') 
                 worksheet.write(row, col + 10, k if k != 'SIN ASIGNAR' else '')
@@ -174,7 +200,6 @@ def traer_datos():
                 worksheet.write(row, col + 15,float(q), celda_venta_numero)
                 worksheet.write(row, col + 16, u, celda_venta_numero)
                 worksheet.write(row, col + 17, float(r), celda_venta_numero)
-                
                 row = row + 1
 
         archivoXls.close()
