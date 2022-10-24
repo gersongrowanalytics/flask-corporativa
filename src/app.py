@@ -18,7 +18,6 @@ def traer_datos():
     try:
         print('error')
 
-        # return 'ok'
         cursor = conexion.connection.cursor()
 
         meses = ['meses','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre']
@@ -69,24 +68,23 @@ def traer_datos():
                 cont = cont + 1
 
             consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
-            # consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, req_empresa)
 
         else:
 
-            tamanio_zonas = (req_array_zonas)
+            tamanio_zonas = len(req_array_zonas)
             consulta_web = ''
 
             cont = 1
-
             for zona in req_array_zonas:
                 if cont == tamanio_zonas:
-                    consulta_web = consulta_web + 'vsbregion = "{0}" '.format(zona)
+                    consulta_web = consulta_web + 'vsbregion = "{0}"'.format(zona)
                 else:
                     consulta_web = consulta_web + 'vsbregion = "{0}" OR '.format(zona)
+                cont = cont + 1
 
+            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
-            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE vsbfecha LIKE "{0}" && {1} ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
-
+        print(consulta_seleccionar)
 
         cursor.execute(consulta_seleccionar)
         datos = cursor.fetchall()
@@ -181,8 +179,6 @@ def traer_datos():
 
         archivoXls.close()
 
-        print(nombre_archivo_ext, nombre_archivo)
-
         consulta = 'INSERT INTO carcargasarchivos (carid, tcaid, fecid, usuid, carnombrearchivo, carubicacion, carexito, created_at, updated_at, carurl) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
 
         valores = (None, 17, None, 1, nombre_archivo_ext,'/', 1, None, None, nombre_archivo)
@@ -200,7 +196,6 @@ def traer_datos():
 
 @app.route('/descargar-archivo/<archivo>')
 def descargar_archivo(archivo):
-
 
     PATH = '../'+archivo
     return send_file(PATH, as_attachment = True)
