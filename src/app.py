@@ -82,7 +82,7 @@ def traer_datos():
                     consulta_web = consulta_web + 'vsbregion = "{0}" OR '.format(zona)
                 cont = cont + 1
 
-            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
+            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbfecha, vsbregion, vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
         print(consulta_seleccionar)
 
@@ -123,24 +123,24 @@ def traer_datos():
         worksheet.set_column(11, 14, 16)
 
         
-        worksheet.write(0, 0, 'Empresa', celda_empresa)
-        worksheet.write(0, 1, 'Region', celda_empresa)
-        worksheet.write(0, 2, 'Ciudad', celda_empresa)
+        worksheet.write(0, 0, 'Distribuidor', celda_empresa)
+        worksheet.write(0, 1, 'Zona', celda_empresa)
+        worksheet.write(0, 2, 'Locality', celda_empresa)
         worksheet.write(0, 3, 'Año', celda_empresa)
         worksheet.write(0, 4, 'Mes', celda_empresa)
         worksheet.write(0, 5, 'Dia', celda_empresa)
-        worksheet.write(0, 6, 'Codigo Sap', celda_empresa)
-        worksheet.write(0, 7, 'Producto', celda_empresa)
+        worksheet.write(0, 6, 'Cod. Material', celda_empresa)
+        worksheet.write(0, 7, 'Material', celda_empresa)
         worksheet.write(0, 8, 'Categoria', celda_empresa)
-        worksheet.write(0, 9, 'Subcategoria', celda_empresa)
+        worksheet.write(0, 9, 'Sub Categoría', celda_empresa)
         worksheet.write(0, 10, 'Cod Cliente', celda_cliente)
         worksheet.write(0, 11, 'Vendedor', celda_cliente)
         worksheet.write(0, 12, 'Tipo Negocio', celda_cliente)
-        worksheet.write(0, 13, 'Zona', celda_cliente)
+        worksheet.write(0, 13, 'Zona Cliente', celda_cliente)
         worksheet.write(0, 14, 'Mercado', celda_cliente)
-        worksheet.write(0, 15, 'Soles/DT', celda_ventas)
-        worksheet.write(0, 16, 'NIV', celda_ventas)
-        worksheet.write(0, 17, 'Cajas', celda_ventas)
+        worksheet.write(0, 15, 'V-MonedaLocal', celda_ventas)
+        worksheet.write(0, 16, 'V-NIV', celda_ventas)
+        worksheet.write(0, 17, 'V-Cajas', celda_ventas)
 
         row = 1
         col = 0
