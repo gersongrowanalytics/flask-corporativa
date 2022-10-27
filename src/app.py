@@ -87,7 +87,7 @@ def traer_datos():
         datos = cursor.fetchall()
 
         #Creacion y manipulación del excel
-        archivoXls = xlsxwriter.Workbook("/var/www/kc/spider/flask/src/"+nombre_archivo_ext)
+        archivoXls = xlsxwriter.Workbook(nombre_archivo_ext)
         worksheet = archivoXls.add_worksheet('Ventas SO')
         
         celda_empresa   = archivoXls.add_format({
@@ -215,7 +215,8 @@ def traer_datos():
         PATH = './' + nombre_archivo_ext
         print("PATH: ---------------")
         print(PATH)
-        return send_file(PATH, as_attachment = True)
+        return PATH
+        # return send_file(PATH, as_attachment = True)
 
     except Exception as e:
         return e
