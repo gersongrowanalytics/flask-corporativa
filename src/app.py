@@ -85,15 +85,17 @@ def traer_datos():
 
         cursor.execute(consulta_seleccionar)
         datos = cursor.fetchall()
+        
+        return os.getcwd()
 
         #Creacion y manipulación del excel
         archivoXls = xlsxwriter.Workbook('./'+nombre_archivo_ext)
         worksheet = archivoXls.add_worksheet('Ventas SO')
         archivoXls.close()
-
+    
         PATH = './' + nombre_archivo_ext
 
-        return send_file(PATH, as_attachment = True)
+        
 
     except Exception as e:
         return e
