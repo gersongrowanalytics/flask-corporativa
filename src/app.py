@@ -17,11 +17,11 @@ conexion = MySQL(app)
 def traer_datos():
     try:
         
-        path = "./"
-        lista_archivos = os.listdir(path)
-        for archivo in lista_archivos:
-            if archivo.endswith(".xlsx"):
-                os.remove(path + archivo)
+        # path = "./"
+        # lista_archivos = os.listdir(path)
+        # for archivo in lista_archivos:
+        #     if archivo.endswith(".xlsx"):
+        #         os.remove(path + archivo)
 
         cursor = conexion.connection.cursor()
 
