@@ -2,14 +2,14 @@
 from flask import Flask, jsonify, send_file, request
 from config import config
 from flask_mysqldb import MySQL
-from flask_cors import CORS
+# from flask_cors import CORS
 import os
 import xlsxwriter
 import random
 
 app = Flask(__name__)
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 conexion = MySQL(app)
 
