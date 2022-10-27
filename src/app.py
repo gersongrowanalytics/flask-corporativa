@@ -16,7 +16,8 @@ conexion = MySQL(app)
 @app.route('/traerDatos')
 def traer_datos():
     return jsonify({
-        "data" : "datas"
+        "data" : "datas",
+        "otros" : os.getcwd()
     })
 
 # @app.route('/descargar-archivo/<archivo>')
