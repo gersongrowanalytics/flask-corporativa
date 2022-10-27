@@ -2,14 +2,14 @@
 from flask import Flask, jsonify, send_file, request
 from config import config
 from flask_mysqldb import MySQL
-# from flask_cors import CORS
+from flask_cors import CORS
 import os
 import xlsxwriter
 import random
 
 app = Flask(__name__)
-# cors = CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 conexion = MySQL(app)
 
@@ -48,7 +48,7 @@ def traer_datos():
         #Eliminar el registro si ya existe el mes y año 
         # consulta_eliminar = 'DELETE FROM carcargasarchivos WHERE carurl = "{0}"'.format(nombre_archivo)
         # cursor.execute(consulta_eliminar)
-        conexion.connection.commit()
+        # conexion.connection.commit()
         # print(cursor.rowcount, " registro eliminado: {0}".format(nombre_archivo))
 
         if req_array_zonas == []:
@@ -64,7 +64,7 @@ def traer_datos():
                     consulta_web = consulta_web + 'vsbempresa = "{0}" OR '.format(empresa)
                 cont = cont + 1
 
-            # consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
+            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
         else:
 
@@ -79,11 +79,11 @@ def traer_datos():
                     consulta_web = consulta_web + 'vsbregion = "{0}" OR '.format(zona)
                 cont = cont + 1
 
-            # consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbfecha, vsbregion, vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
+            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbfecha, vsbregion, vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
         # print(consulta_seleccionar)
 
-        # cursor.execute(consulta_seleccionar)
+        cursor.execute(consulta_seleccionar)
         datos = cursor.fetchall()
 
         #Creacion y manipulación del excel
@@ -210,7 +210,7 @@ def traer_datos():
 
         # cursor.execute(consulta, valores)
 
-        conexion.connection.commit()
+        # conexion.connection.commit()
 
         PATH = './' + nombre_archivo_ext
         return send_file(PATH, as_attachment = True)
