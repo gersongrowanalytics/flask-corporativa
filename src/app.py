@@ -213,6 +213,8 @@ def traer_datos():
         # conexion.connection.commit()
 
         PATH = './' + nombre_archivo_ext
+        print("PATH: ---------------")
+        print(PATH)
         return send_file(PATH, as_attachment = True)
 
     except Exception as e:
