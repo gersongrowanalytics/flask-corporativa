@@ -212,14 +212,13 @@ def traer_datos():
 
         conexion.connection.commit()
 
-        PATH = '../' + nombre_archivo_ext
-
+        PATH = './' + nombre_archivo_ext
         return send_file(PATH, as_attachment = True)
 
     except Exception as e:
         return e
 
-@app.route('/descargar-archivo/<archivo>')
+# @app.route('/descargar-archivo/<archivo>')
 def descargar_archivo(archivo):
 
     PATH = '../'+archivo
