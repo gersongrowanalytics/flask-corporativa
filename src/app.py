@@ -46,10 +46,10 @@ def traer_datos():
         nombre_archivo_ext = 'Ventas SO ({0} {1})-{2}.xlsx'.format(nombre_mes[:3], req_anio, str(random.randint(100,999)))
 
         #Eliminar el registro si ya existe el mes y año 
-        consulta_eliminar = 'DELETE FROM carcargasarchivos WHERE carurl = "{0}"'.format(nombre_archivo)
-        cursor.execute(consulta_eliminar)
+        # consulta_eliminar = 'DELETE FROM carcargasarchivos WHERE carurl = "{0}"'.format(nombre_archivo)
+        # cursor.execute(consulta_eliminar)
         conexion.connection.commit()
-        print(cursor.rowcount, " registro eliminado: {0}".format(nombre_archivo))
+        # print(cursor.rowcount, " registro eliminado: {0}".format(nombre_archivo))
 
         if req_array_zonas == []:
 
@@ -64,7 +64,7 @@ def traer_datos():
                     consulta_web = consulta_web + 'vsbempresa = "{0}" OR '.format(empresa)
                 cont = cont + 1
 
-            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
+            # consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
         else:
 
@@ -79,11 +79,11 @@ def traer_datos():
                     consulta_web = consulta_web + 'vsbregion = "{0}" OR '.format(zona)
                 cont = cont + 1
 
-            consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbfecha, vsbregion, vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
+            # consulta_seleccionar = 'SELECT * FROM vsbventassobol WHERE (vsbfecha LIKE "{0}") && ({1}) ORDER BY vsbfecha, vsbregion, vsbempresa, vsbtotalreventa DESC'.format(req_fecha, consulta_web)
 
-        print(consulta_seleccionar)
+        # print(consulta_seleccionar)
 
-        cursor.execute(consulta_seleccionar)
+        # cursor.execute(consulta_seleccionar)
         datos = cursor.fetchall()
 
         #Creacion y manipulación del excel
@@ -204,11 +204,11 @@ def traer_datos():
 
         archivoXls.close()
 
-        consulta = 'INSERT INTO carcargasarchivos (carid, tcaid, fecid, usuid, carnombrearchivo, carubicacion, carexito, created_at, updated_at, carurl) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+        # consulta = 'INSERT INTO carcargasarchivos (carid, tcaid, fecid, usuid, carnombrearchivo, carubicacion, carexito, created_at, updated_at, carurl) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
 
-        valores = (None, 17, None, 1, nombre_archivo_ext,'/', 1, None, None, nombre_archivo)
+        # valores = (None, 17, None, 1, nombre_archivo_ext,'/', 1, None, None, nombre_archivo)
 
-        cursor.execute(consulta, valores)
+        # cursor.execute(consulta, valores)
 
         conexion.connection.commit()
 
