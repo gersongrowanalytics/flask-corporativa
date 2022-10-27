@@ -220,6 +220,8 @@ def traer_datos():
 
     except Exception as e:
         return e
+    
+    return 'ok'
 
 # @app.route('/descargar-archivo/<archivo>')
 def descargar_archivo(archivo):
