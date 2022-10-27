@@ -87,7 +87,7 @@ def traer_datos():
         datos = cursor.fetchall()
 
         #Creacion y manipulación del excel
-        archivoXls = xlsxwriter.Workbook(nombre_archivo_ext)
+        archivoXls = xlsxwriter.Workbook("/var/www/kc/spider/flask/src/"+nombre_archivo_ext)
         worksheet = archivoXls.add_worksheet('Ventas SO')
         
         celda_empresa   = archivoXls.add_format({
